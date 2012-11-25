@@ -3,6 +3,7 @@ namespace Lemon\FormBuilder;
 
 use Lemon\FormBuilder\Element;
 use Lemon\FormBuilder\Validator;
+use Lemon\FormBuilder\ResolverInterface;
 
 class AbstractElement implements Element {
 
@@ -18,6 +19,7 @@ class AbstractElement implements Element {
 	const ATTR_CLASS = 'class';
 
 	protected $validators;
+	protected $validatorResolver;
 	protected $errors = array();
 	protected $dom;
 
@@ -65,12 +67,9 @@ class AbstractElement implements Element {
 		}
 	}
 
-	/**
-	 * @todo Need to use a ValidatorResolver so that the class lookups can be overridden
-	 */
 	public function addValidator($name, $value = null) {
 		if (!empty($name)) {
-			$className = "Lemon\\FormBuilder\\Validator\\" . ucfirst(strtolower($name));
+			$className = $this->getValidatorResolver()->resolve($name);
 
 			if (class_exists($className)) {
 				$validator = new $className($value);
@@ -107,4 +106,13 @@ class AbstractElement implements Element {
 	public function setValue($value) {
 		$this->dom->setAttribute(self::ATTR_VALUE, $value);
 	}
+
+	public function getValidatorResolver() {
+		return $this->validatorResolver;
+	}
+
+	public function setValidatorResolver(ResolverInterface $validatorResolver) {
+		$this->validatorResolver = $validatorResolver;
+	}
+
 }

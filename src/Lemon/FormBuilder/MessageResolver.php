@@ -1,7 +1,7 @@
 <?php
 namespace Lemon\FormBuilder;
 
-class MessageResolver {
+class MessageResolver implements ResolverInterface {
 
 	protected $messages = array(
 		'Lemon\FormBuilder\Validator\Email' 		=> 'Please enter a valid email address.',

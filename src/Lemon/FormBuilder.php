@@ -20,6 +20,7 @@ class FormBuilder {
 	protected $processed;
 	protected $errorTemplate = '<span class="help-inline">%s</span>';
 	protected $invalidHandler;
+	protected $validatorResolver;
 	protected $messageResolver;
 
 	public function __construct($html) {
@@ -52,6 +53,7 @@ class FormBuilder {
 						throw new Exception("Class {$className} must implement the Lemon\\FormBuilder\\Element interface.");
 					} else {
 						$element->setDom($node);
+						$element->setValidatorResolver($this->getValidatorResolver());
 
 						$this->elements[] = $element;
 					}
@@ -176,10 +178,25 @@ class FormBuilder {
 		$this->invalidHandler = $invalidHandler;
 	}
 
+	public function setMessageResolver(MessageResolverInterface $messageResolver) {
+		$this->messageResolver = $messageResolver;
+	}
+
 	public function getMessageResolver() {
 		if (is_null($this->messageResolver)) {
 			$this->messageResolver = new \Lemon\FormBuilder\MessageResolver;
 		}
 		return $this->messageResolver;
+	}
+
+	public function setValidatorResolver(ValidatorResolverInterface $validatorResolver) {
+		$this->validatorResolver = $validatorResolver;
+	}
+
+	public function getValidatorResolver() {
+		if (is_null($this->validatorResolver)) {
+			$this->validatorResolver = new \Lemon\FormBuilder\ValidatorResolver;
+		}
+		return $this->validatorResolver;
 	}
 }
