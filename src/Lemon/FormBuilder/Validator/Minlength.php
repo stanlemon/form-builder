@@ -12,7 +12,7 @@ class Minlength implements Validator {
 	}
 
 	public function validate($value) {
-		return strlen(trim($value)) > $this->minlength;
+		return strlen(trim($value)) >= $this->minlength;
 	}
 
 	public function getParams() {
