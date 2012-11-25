@@ -26,7 +26,11 @@ function __autoload($class) {
 			<p>This project's purpose is to demonstrate server side form validation using client side techniques. Specifically, this library 
 			should enable a UI developer to design a form with HTML5 validation attributes and have PHP provide validation for those in the 
 			event that the browser does not support HTML5 validation or in the event that the user has somehow decided to disable it.</p>
-			<p><em>This library is a work in progress and only intended for research at this point.</em></p>
+			<p><em>This library is a work in progress and only intended for research at this point.</em>  Know limitations are:</p>
+			<ul>
+				<li>For non-keyed arrays you must specify [0], [1], [2] and not just simply [] to work properly.</li>
+				<li>Validators on checkboxes and radios are essentially useless since validators exist at the individual node level.</li>
+			</ul>
 <?php
 $form = <<<EOHTML
 <div>
