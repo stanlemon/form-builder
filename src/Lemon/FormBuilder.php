@@ -114,7 +114,7 @@ class FormBuilder {
 				}
 			}
 		}
-		return $this->dom->saveHTML();
+		return $this->dom->saveHTML($this->dom->documentElement->firstChild->firstChild);
 	}
 
 	public function findValueByFieldName($name, $input) {
