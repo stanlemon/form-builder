@@ -6,6 +6,17 @@ use Lemon\FormBuilder\Validator;
 
 class AbstractElement implements Element {
 
+	const ATTR_TYPE = 'type';
+	const ATTR_NAME = 'name';
+	const ATTR_VALUE = 'value';
+	const ATTR_CHECKED = 'checked';
+	const ATTR_SELECTED = 'selected';
+	const ATTR_REQUIRED = 'required';
+	const ATTR_MAXLENGTH = 'maxlength';
+	const ATTR_MINLENGTH = 'minlength';
+	const ATTR_PATTERN = 'pattern';
+	const ATTR_CLASS = 'class';
+
 	protected $validators;
 	protected $errors = array();
 	protected $dom;
@@ -45,7 +56,7 @@ class AbstractElement implements Element {
 	public function loadValidators() {
 		$this->validators = array();
 
-		$this->addValidator($this->dom->getAttribute('type'));
+		$this->addValidator($this->dom->getAttribute(self::ATTR_TYPE));
 
 		for ($i = 0; $i<$this->dom->attributes->length; $i++) {
 			$attr = $this->dom->attributes->item($i);
@@ -86,14 +97,14 @@ class AbstractElement implements Element {
 	}
 
 	public function getName() {
-		return $this->dom->getAttribute('name');
+		return $this->dom->getAttribute(self::ATTR_NAME);
 	}
 
 	public function getValue() {
-		return $this->dom->getAttribute('value');
+		return $this->dom->getAttribute(self::ATTR_VALUE);
 	}
 
 	public function setValue($value) {
-		$this->dom->setAttribute('value', $value);
+		$this->dom->setAttribute(self::ATTR_VALUE, $value);
 	}
 }
