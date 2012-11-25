@@ -19,7 +19,7 @@ class FormBuilder {
 	protected $invalid = array();
 	protected $processed;
 	protected $errorTemplate = '<span class="help-inline">%s</span>';
-	protected $errorPlacement;
+	protected $invalidHandler;
 	protected $messageResolver;
 
 	public function __construct($html) {
@@ -97,8 +97,8 @@ class FormBuilder {
 			$this->dom->importNode($error, true)
 		);
 
-		if (is_callable($this->errorPlacement)) {
-			call_user_func($this->errorPlacement, $element);
+		if (is_callable($this->invalidHandler)) {
+			call_user_func($this->invalidHandler, $element);
 		}
 	}
 
@@ -141,8 +141,6 @@ class FormBuilder {
 		return $lookup;
 	}
 
-
-
 	public function isProcessed() {
 		return !is_null($this->processed);
 	}
@@ -174,8 +172,8 @@ class FormBuilder {
 		$this->errorTemplate = $errorTemplate;
 	}
 
-	public function setErrorPlacement(\Closure $errorPlacement) {
-		$this->errorPlacement = $errorPlacement;
+	public function setInvalidHandler(\Closure $invalidHandler) {
+		$this->invalidHandler = $invalidHandler;
 	}
 
 	public function getMessageResolver() {

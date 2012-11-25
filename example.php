@@ -108,7 +108,7 @@ EOHTML;
 $start = microtime(true);
 
 $formBuilder = new Lemon\FormBuilder($form);
-$formBuilder->setErrorPlacement(function($element){
+$formBuilder->setInvalidHandler(function($element){
 	$element->getDom()->parentNode->parentNode->setAttribute('class',
 		$element->getDom()->parentNode->parentNode->getAttribute('class') . ' error'
 	);
