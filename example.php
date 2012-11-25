@@ -30,7 +30,7 @@ function __autoload($class) {
 <?php
 $form = <<<EOHTML
 <div>
-	<form class="form-horizontal" method="post" action="?action=submit">
+	<form class="nojs form-horizontal" method="post" action="?action=submit">
 		<fieldset>
 			<legend>My Form</legend>
 
@@ -38,6 +38,25 @@ $form = <<<EOHTML
 				<label class="control-label" for="date">Date</label>
 				<div class="controls">
 					<input type="text" name="date" id="date" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" placeholder="YYYY-MM-DD" />
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">
+					Favorite Color
+				</label>
+				<div class="controls">
+					<label class="checkbox">
+						<input name="color[0]" type="checkbox" value="purple" /> Purple
+					</label>
+
+					<label class="checkbox">
+						<input name="color[1]" type="checkbox" value="blue" /> Blue
+					</label>
+
+					<label class="checkbox">
+						<input name="color[2]" type="checkbox" value="red" /> Red
+					</label>
 				</div>
 			</div>
 
@@ -53,9 +72,16 @@ $form = <<<EOHTML
 			</div>
 
 			<div class="control-group">
-				<label class="control-label" for="name">Name</label>
+				<label class="control-label" for="name">First Name</label>
 				<div class="controls">
-					<input type="text" name="name" id="name" required maxlength="50" minlength="4" placeholder="Name">
+					<input type="text" name="name[first]" id="first_name" required maxlength="50" minlength="4" placeholder="Name">
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="name">Last Name</label>
+				<div class="controls">
+					<input type="text" name="name[last]" id="last_name" required maxlength="50" minlength="4" placeholder="Name">
 				</div>
 			</div>
 
@@ -116,6 +142,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 print $formBuilder->render();
 
+print "<pre>";
+var_dump($_POST);
+print "</pre>";
+
 print '<hr /><p>Execution time: ' . (microtime(true) - $start) . '</p><br />';
 
 ?>
@@ -135,9 +165,8 @@ print '<hr /><p>Execution time: ' . (microtime(true) - $start) . '</p><br />';
 			return this;
 		};
 
-		/**
 		$(function(){
-			$('form').each(function(){
+			$('form').not('.nojs').each(function(){
 				$(this).validate({
 					errorClass: "help-inline",
 					validClass: "help-inline",
@@ -152,7 +181,6 @@ print '<hr /><p>Execution time: ' . (microtime(true) - $start) . '</p><br />';
 				});
 			});
 		});
-		**/
 		</script>
     </body>
 </html>
