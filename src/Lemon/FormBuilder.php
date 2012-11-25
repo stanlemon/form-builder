@@ -69,7 +69,7 @@ class FormBuilder {
 		$this->invalid = array();
 
 		foreach ($this->elements as $element) {
-			$value = (!isset($input[$element->getName()])) ? null : $input[$element->getName()];
+			$value = $this->findValueByFieldName($element->getName(), $this->processed);
 	
 			if ($element->validate($value)) {
 				$this->valid[] = $element;
@@ -105,7 +105,9 @@ class FormBuilder {
 	public function render() {
 		if ($this->isProcessed() && $this->hasInvalid()) {
 			foreach ($this->getElements() as $element) {
-				$element->setValue($this->processed[$element->getName()]);
+				$value = $this->findValueByFieldName($element->getName(), $this->processed);
+
+				$element->setValue($value);
 
 				if (in_array($element, $this->getInvalid())) {
 					$this->handleError($element);
@@ -114,6 +116,32 @@ class FormBuilder {
 		}
 		return $this->dom->saveHTML();
 	}
+
+	public function findValueByFieldName($name, $input) {
+		$var = array();
+
+		parse_str($name, $var);
+
+		$lookup = $input;
+
+		while (null !== ($key = key($var))) {
+			$var = $var[$key];
+
+			if (isset($lookup[$key])) {
+				$lookup = $lookup[$key];
+			} else {
+				$lookup = null;
+			}
+
+			if (!is_array($var)) {
+				break;
+			}
+		}
+
+		return $lookup;
+	}
+
+
 
 	public function isProcessed() {
 		return !is_null($this->processed);
