@@ -106,17 +106,25 @@ class FormBuilder {
 
 	public function render() {
 		if ($this->isProcessed() && $this->hasInvalid()) {
-			foreach ($this->getElements() as $element) {
-				$value = $this->findValueByFieldName($element->getName(), $this->processed);
-
-				$element->setValue($value);
-
+			$this->populate($this->processed, function($element){
 				if (in_array($element, $this->getInvalid())) {
 					$this->handleError($element);
 				}
-			}
+			});
 		}
 		return $this->dom->saveHTML($this->dom->documentElement->firstChild->firstChild);
+	}
+
+	public function populate($data, $callback = null) {
+		foreach ($this->getElements() as $element) {
+			$value = $this->findValueByFieldName($element->getName(), $data);
+
+			$element->setValue($value);
+
+			if (is_callable($callback)) {
+				call_user_func($callback, $element);
+			}
+		}
 	}
 
 	public function findValueByFieldName($name, $input) {
